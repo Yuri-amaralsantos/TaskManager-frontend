@@ -29,3 +29,15 @@ export const getCardsByBoard = async (boardId: number): Promise<Card[]> => {
   const res = await axios.get(`${API_URL}/boards/${boardId}`);
   return res.data.cards;
 };
+
+export const createCardInBoard = async (
+  boardId: number,
+  title: string,
+  description: string
+): Promise<Card> => {
+  const res = await axios.post(`${API_URL}/boards/${boardId}/cards`, {
+    title,
+    description,
+  });
+  return res.data;
+};

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getBoards, type Board } from "./api/boardApi";
-import { BoardForm } from "./components/BoardForm";
+
 import { BoardList } from "./components/BoardList";
 
 function App() {
@@ -16,10 +16,11 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <h1>Boards App</h1>
-      <BoardForm onBoardCreated={fetchBoards} />
-      <BoardList boards={boards} />
+    <div className="w-[100vw] h-[100vh] flex items-center justify-center">
+      <div className="p-2">
+        <h1 className="text-green-600 mb-2 text-center">Boards App</h1>
+        <BoardList boards={boards} />
+      </div>
     </div>
   );
 }

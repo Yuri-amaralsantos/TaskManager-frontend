@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { type Board, type Card, getCardsByBoard } from "../api/boardApi";
 import { CardList } from "./CardList";
-import { CardForm } from "./CardForm";
+import { BoardFormModal } from "./BoardFormModal";
+import { CardFormModal } from "./CardFormModal";
 
 interface BoardListProps {
   boards: Board[];
@@ -10,6 +11,8 @@ interface BoardListProps {
 export const BoardList = ({ boards }: BoardListProps) => {
   const [selectedBoardId, setSelectedBoardId] = useState<number | null>(null);
   const [cards, setCards] = useState<Card[]>([]);
+  const [isBoardFormOpen, setIsBoardFormOpen] = useState(false);
+  const [isCardFormOpen, setIsCardFormOpen] = useState(false);
 
   const loadCards = async (boardId: number) => {
     const cardsData = await getCardsByBoard(boardId);
@@ -28,25 +31,49 @@ export const BoardList = ({ boards }: BoardListProps) => {
 
   return (
     <div>
-      <ul>
+      <div className="flex justify-between mb-4">
+        <h2 className="text-xl font-bold">Boards</h2>
+        <button
+          className="bg-green-400 text-white px-3 py-1 rounded"
+          onClick={() => setIsBoardFormOpen(true)}
+        >
+          + Add Board
+        </button>
+      </div>
+
+      <div className="grid grid-cols-3 gap-4">
         {boards.map((board) => (
-          <li key={board.id}>
-            <button onClick={() => handleBoardClick(board.id)}>
+          <div key={board.id} className="relative">
+            <button
+              className="bg-blue-200 px-10 py-2 rounded-lg w-full text-left"
+              onClick={() => handleBoardClick(board.id)}
+            >
               {board.name}
             </button>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
 
       {selectedBoardId && (
-        <div>
-          <CardForm
-            boardId={selectedBoardId}
-            onCardCreated={() => loadCards(selectedBoardId)}
-          />
-          <CardList cards={cards} />
+        <div className="mt-4">
+          <CardList cards={cards} onAddCard={() => setIsCardFormOpen(true)} />
         </div>
       )}
+
+      <BoardFormModal
+        isOpen={isBoardFormOpen}
+        onClose={() => setIsBoardFormOpen(false)}
+        onBoardCreated={() => {}}
+      />
+
+      <CardFormModal
+        isOpen={isCardFormOpen}
+        boardId={selectedBoardId}
+        onClose={() => setIsCardFormOpen(false)}
+        onCardCreated={() => {
+          if (selectedBoardId) loadCards(selectedBoardId);
+        }}
+      />
     </div>
   );
 };

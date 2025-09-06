@@ -1,79 +1,39 @@
-import { useState } from "react";
-import { type Board, type Card, getCardsByBoard } from "../api/boardApi";
-import { CardList } from "./CardList";
-import { BoardFormModal } from "./BoardFormModal";
-import { CardFormModal } from "./CardFormModal";
+import { type Board } from "../api/boardApi";
 
 interface BoardListProps {
   boards: Board[];
+  onBoardClick: (boardId: number) => void;
+  onAddBoard: () => void;
 }
 
-export const BoardList = ({ boards }: BoardListProps) => {
-  const [selectedBoardId, setSelectedBoardId] = useState<number | null>(null);
-  const [cards, setCards] = useState<Card[]>([]);
-  const [isBoardFormOpen, setIsBoardFormOpen] = useState(false);
-  const [isCardFormOpen, setIsCardFormOpen] = useState(false);
-
-  const loadCards = async (boardId: number) => {
-    const cardsData = await getCardsByBoard(boardId);
-    setCards(cardsData);
-  };
-
-  const handleBoardClick = async (boardId: number) => {
-    if (selectedBoardId === boardId) {
-      setSelectedBoardId(null);
-      setCards([]);
-      return;
-    }
-    setSelectedBoardId(boardId);
-    await loadCards(boardId);
-  };
-
+export const BoardList = ({
+  boards,
+  onBoardClick,
+  onAddBoard,
+}: BoardListProps) => {
   return (
     <div>
       <div className="flex justify-between mb-4">
-        <h2 className="text-xl font-bold">Boards</h2>
+        <h2 className="text-xl font-bold">Projetos</h2>
         <button
-          className="bg-green-400 text-white px-3 py-1 rounded"
-          onClick={() => setIsBoardFormOpen(true)}
+          className="bg-yellow-300 hover:bg-yellow-500 font-bold text-black px-3 py-1 rounded cursor-pointer"
+          onClick={onAddBoard}
         >
-          + Add Board
+          Adicionar projeto
         </button>
       </div>
 
       <div className="grid grid-cols-3 gap-4">
         {boards.map((board) => (
-          <div key={board.id} className="relative">
-            <button
-              className="bg-blue-200 px-10 py-2 rounded-lg w-full text-left"
-              onClick={() => handleBoardClick(board.id)}
-            >
-              {board.name}
-            </button>
-          </div>
+          <button
+            key={board.id}
+            className="bg-lime-600 hover:bg-lime-800 hover:text-white px-10 py-3 rounded-lg  text-left cursor-pointer"
+            onClick={() => onBoardClick(board.id)}
+          >
+            {board.name}
+          </button>
         ))}
       </div>
-
-      {selectedBoardId && (
-        <div className="mt-4">
-          <CardList cards={cards} onAddCard={() => setIsCardFormOpen(true)} />
-        </div>
-      )}
-
-      <BoardFormModal
-        isOpen={isBoardFormOpen}
-        onClose={() => setIsBoardFormOpen(false)}
-        onBoardCreated={() => {}}
-      />
-
-      <CardFormModal
-        isOpen={isCardFormOpen}
-        boardId={selectedBoardId}
-        onClose={() => setIsCardFormOpen(false)}
-        onCardCreated={() => {
-          if (selectedBoardId) loadCards(selectedBoardId);
-        }}
-      />
     </div>
   );
 };

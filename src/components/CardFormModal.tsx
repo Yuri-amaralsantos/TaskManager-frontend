@@ -33,18 +33,18 @@ export const CardFormModal = ({
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-lg w-96">
-        <h2 className="text-lg font-bold mb-4">Add New Card</h2>
+        <h2 className="text-lg font-bold mb-4">Adicionar nova tarefa</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
           <input
             type="text"
-            placeholder="Card title"
+            placeholder="Titulo"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="border px-2 py-1 rounded"
           />
           <input
             type="text"
-            placeholder="Card description"
+            placeholder="Descrição"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             className="border px-2 py-1 rounded"
@@ -53,11 +53,11 @@ export const CardFormModal = ({
             type="submit"
             className="bg-blue-500 text-white px-3 py-1 rounded mt-2"
           >
-            Add Card
+            Adicionar
           </button>
         </form>
         <button className="mt-4 text-red-500" onClick={onClose}>
-          Close
+          Fechar
         </button>
       </div>
     </div>

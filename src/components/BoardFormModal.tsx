@@ -29,7 +29,7 @@ export const BoardFormModal = ({
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-lg w-96">
-        <h2 className="text-lg font-bold mb-4">Create New Board</h2>
+        <h2 className="text-lg font-bold mb-4">Criar novo projeto</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
           <input
             type="text"
@@ -42,11 +42,11 @@ export const BoardFormModal = ({
             type="submit"
             className="bg-green-500 text-white px-3 py-1 rounded mt-2"
           >
-            Add Board
+            Adicionar projeto
           </button>
         </form>
         <button className="mt-4 text-red-500" onClick={onClose}>
-          Close
+          Fechar
         </button>
       </div>
     </div>

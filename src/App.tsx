@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import {
   getBoards,
+  getCardsByBoard,
+  deleteBoard,
+  deleteCard,
   type Board,
   type Card,
-  getCardsByBoard,
 } from "./api/boardApi";
 
 import { BoardList } from "./components/BoardList";
@@ -17,6 +19,8 @@ function App() {
   const [cards, setCards] = useState<Card[]>([]);
   const [isBoardFormOpen, setIsBoardFormOpen] = useState(false);
   const [isCardFormOpen, setIsCardFormOpen] = useState(false);
+  const [boardToEdit, setBoardToEdit] = useState<Board | null>(null);
+  const [cardToEdit, setCardToEdit] = useState<Card | null>(null);
 
   const fetchBoards = async () => {
     const data = await getBoards();
@@ -42,6 +46,16 @@ function App() {
     setCards([]);
   };
 
+  const handleDeleteBoard = async (id: number) => {
+    await deleteBoard(id);
+    fetchBoards();
+  };
+
+  const handleDeleteCard = async (id: number) => {
+    await deleteCard(id);
+    if (selectedBoardId) loadCards(selectedBoardId);
+  };
+
   return (
     <div className="w-[100vw] h-[100vh] bg-slate-600 flex pt-10 justify-center">
       <div className="p-4 w-full h-full max-w-3xl bg-white rounded-lg">
@@ -53,7 +67,15 @@ function App() {
           <BoardList
             boards={boards}
             onBoardClick={handleBoardClick}
-            onAddBoard={() => setIsBoardFormOpen(true)}
+            onAddBoard={() => {
+              setBoardToEdit(null);
+              setIsBoardFormOpen(true);
+            }}
+            onEditBoard={(board) => {
+              setBoardToEdit(board);
+              setIsBoardFormOpen(true);
+            }}
+            onDeleteBoard={handleDeleteBoard}
           />
         )}
 
@@ -70,10 +92,18 @@ function App() {
 
             <CardList
               cards={cards}
-              onAddCard={() => setIsCardFormOpen(true)}
               boardName={
                 boards.find((b) => b.id === selectedBoardId)?.name || ""
               }
+              onAddCard={() => {
+                setCardToEdit(null);
+                setIsCardFormOpen(true);
+              }}
+              onEditCard={(card) => {
+                setCardToEdit(card);
+                setIsCardFormOpen(true);
+              }}
+              onDeleteCard={handleDeleteCard}
             />
           </div>
         )}
@@ -82,6 +112,7 @@ function App() {
           isOpen={isBoardFormOpen}
           onClose={() => setIsBoardFormOpen(false)}
           onBoardCreated={() => fetchBoards()}
+          board={boardToEdit}
         />
 
         <CardFormModal
@@ -91,6 +122,7 @@ function App() {
           onCardCreated={() => {
             if (selectedBoardId) loadCards(selectedBoardId);
           }}
+          card={cardToEdit}
         />
       </div>
     </div>

@@ -20,14 +20,17 @@ export const CardFormModal = ({
 }: CardFormModalProps) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [status, setStatus] = useState("a fazer");
 
   useEffect(() => {
     if (card) {
       setTitle(card.title);
       setDescription(card.description);
+      setStatus(card.status);
     } else {
       setTitle("");
       setDescription("");
+      setStatus("a fazer");
     }
   }, [card]);
 
@@ -39,13 +42,14 @@ export const CardFormModal = ({
 
     try {
       if (card) {
-        await updateCard(card.id, title, description);
+        await updateCard(card.id, title, description, status);
       } else {
-        await createCardInBoard(boardId, title, description);
+        await createCardInBoard(boardId, title, description, status);
       }
 
       setTitle("");
       setDescription("");
+      setStatus("a fazer");
       onCardCreated();
       onClose();
     } catch (error: unknown) {
@@ -79,9 +83,21 @@ export const CardFormModal = ({
             onChange={(e) => setDescription(e.target.value)}
             className="border px-2 py-1 rounded h-[200px] text-start resize-none"
           />
+
+          <select
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            className="border px-2 py-1 rounded"
+          >
+            <option value="TODO">A Fazer</option>
+            <option value="DOING">Em Progresso</option>
+            <option value="DONE">Concluído</option>
+            <option value="URGENT">Urgente</option>
+          </select>
+
           <button
             type="submit"
-            className="bg-slate-500 text-white px-3 py-1 mt-2"
+            className="bg-slate-500 text-white rounded px-3 py-1 mt-2"
           >
             {card ? "Salvar alterações" : "Adicionar"}
           </button>

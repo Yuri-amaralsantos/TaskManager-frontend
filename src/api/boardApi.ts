@@ -6,6 +6,7 @@ export interface Card {
   id: number;
   title: string;
   description: string;
+  status: "TODO" | "DOING" | "DONE" | "URGENT";
   boardId: number;
 }
 
@@ -50,11 +51,13 @@ export const getCardsByBoard = async (boardId: number): Promise<Card[]> => {
 export const createCardInBoard = async (
   boardId: number,
   title: string,
-  description: string
+  description: string,
+  status: string
 ): Promise<Card> => {
   const res = await axios.post(`${API_URL}/boards/${boardId}/cards`, {
     title,
     description,
+    status,
   });
   return res.data;
 };
@@ -62,9 +65,14 @@ export const createCardInBoard = async (
 export const updateCard = async (
   id: number,
   title: string,
-  description: string
+  description: string,
+  status: string
 ): Promise<Card> => {
-  const res = await axios.put(`${API_URL}/cards/${id}`, { title, description });
+  const res = await axios.put(`${API_URL}/cards/${id}`, {
+    title,
+    description,
+    status,
+  });
   return res.data;
 };
 

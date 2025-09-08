@@ -9,10 +9,9 @@ import {
 } from "./api/boardApi";
 
 import { BoardList } from "./components/BoardList";
-import { CardList } from "./components/CardList";
+import { BoardHeader } from "./components/BoardHeader";
 import { BoardFormModal } from "./components/BoardFormModal";
 import { CardFormModal } from "./components/CardFormModal";
-import { HiArrowLeft } from "react-icons/hi";
 
 function App() {
   const [boards, setBoards] = useState<Board[]>([]);
@@ -42,11 +41,6 @@ function App() {
     await loadCards(boardId);
   };
 
-  const handleBackToBoards = () => {
-    setSelectedBoardId(null);
-    setCards([]);
-  };
-
   const handleDeleteBoard = async (id: number) => {
     await deleteBoard(id);
     fetchBoards();
@@ -58,20 +52,58 @@ function App() {
   };
 
   return (
-    <div className="w-[100vw] h-[100vh] bg-slate-600 flex px-4 pt-4 justify-center">
-      <div className="p-4 w-full h-full  bg-gray-200">
-        <h1 className="text-slate-800 mb-4 font-bold text-center text-2xl">
-          Agenciador de tarefas
-        </h1>
+    <div className="w-[100vw] h-[100vh] bg-slate-600 flex">
+      <BoardList
+        boards={boards}
+        onBoardClick={handleBoardClick}
+        onAddBoard={() => {
+          setBoardToEdit(null);
+          setIsBoardFormOpen(true);
+        }}
+        onEditBoard={(board) => {
+          setBoardToEdit(board);
+          setIsBoardFormOpen(true);
+        }}
+        onDeleteBoard={handleDeleteBoard}
+      />
 
+      <div className="flex-1 bg-blue-500 overflow-y-auto">
         {!selectedBoardId && (
-          <BoardList
-            boards={boards}
-            onBoardClick={handleBoardClick}
-            onAddBoard={() => {
-              setBoardToEdit(null);
-              setIsBoardFormOpen(true);
+          <p className="text-center text-gray-600">
+            Selecione um projeto no menu lateral.
+          </p>
+        )}
+
+        {selectedBoardId && (
+          <BoardHeader
+            board={boards.find((b) => b.id === selectedBoardId)!}
+            cardGroups={[
+              {
+                title: "A Fazer",
+                cards: cards.filter((c) => c.status === "TODO"),
+              },
+              {
+                title: "Em Progresso",
+                cards: cards.filter((c) => c.status === "DOING"),
+              },
+              {
+                title: "Concluído",
+                cards: cards.filter((c) => c.status === "DONE"),
+              },
+              {
+                title: "Urgente",
+                cards: cards.filter((c) => c.status === "URGENT"),
+              },
+            ]}
+            onAddCard={() => {
+              setCardToEdit(null);
+              setIsCardFormOpen(true);
             }}
+            onEditCard={(card) => {
+              setCardToEdit(card);
+              setIsCardFormOpen(true);
+            }}
+            onDeleteCard={handleDeleteCard}
             onEditBoard={(board) => {
               setBoardToEdit(board);
               setIsBoardFormOpen(true);
@@ -79,53 +111,24 @@ function App() {
             onDeleteBoard={handleDeleteBoard}
           />
         )}
-
-        {selectedBoardId && (
-          <div>
-            <div className="flex justify-between mb-2">
-              <button
-                className="bg-slate-300 hover:bg-slate-300 text-black font-bold px-3 flex gap-2 items-center py-1"
-                onClick={handleBackToBoards}
-              >
-                <HiArrowLeft /> Voltar para projetos
-              </button>
-            </div>
-
-            <CardList
-              cards={cards}
-              boardName={
-                boards.find((b) => b.id === selectedBoardId)?.name || ""
-              }
-              onAddCard={() => {
-                setCardToEdit(null);
-                setIsCardFormOpen(true);
-              }}
-              onEditCard={(card) => {
-                setCardToEdit(card);
-                setIsCardFormOpen(true);
-              }}
-              onDeleteCard={handleDeleteCard}
-            />
-          </div>
-        )}
-
-        <BoardFormModal
-          isOpen={isBoardFormOpen}
-          onClose={() => setIsBoardFormOpen(false)}
-          onBoardCreated={() => fetchBoards()}
-          board={boardToEdit}
-        />
-
-        <CardFormModal
-          isOpen={isCardFormOpen}
-          boardId={selectedBoardId}
-          onClose={() => setIsCardFormOpen(false)}
-          onCardCreated={() => {
-            if (selectedBoardId) loadCards(selectedBoardId);
-          }}
-          card={cardToEdit}
-        />
       </div>
+
+      <BoardFormModal
+        isOpen={isBoardFormOpen}
+        onClose={() => setIsBoardFormOpen(false)}
+        onBoardCreated={() => fetchBoards()}
+        board={boardToEdit}
+      />
+
+      <CardFormModal
+        isOpen={isCardFormOpen}
+        boardId={selectedBoardId}
+        onClose={() => setIsCardFormOpen(false)}
+        onCardCreated={() => {
+          if (selectedBoardId) loadCards(selectedBoardId);
+        }}
+        card={cardToEdit}
+      />
     </div>
   );
 }

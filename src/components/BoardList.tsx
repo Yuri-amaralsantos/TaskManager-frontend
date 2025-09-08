@@ -1,5 +1,4 @@
 import { type Board } from "../api/boardApi";
-import { FaEdit, FaTrash } from "react-icons/fa";
 
 interface BoardListProps {
   boards: Board[];
@@ -13,45 +12,33 @@ export const BoardList = ({
   boards,
   onBoardClick,
   onAddBoard,
-  onEditBoard,
-  onDeleteBoard,
 }: BoardListProps) => {
   return (
-    <div>
-      <div className="flex justify-between mb-4">
-        <h2 className="text-xl font-bold">Projetos</h2>
+    <div className="w-64 h-full bg-slate-700 text-white flex flex-col">
+      <div className="flex justify-between items-center p-4 border-b border-slate-500">
+        <h2 className="font-bold text-lg">Projetos</h2>
         <button
-          className="bg-slate-300 hover:bg-slate-500 font-bold text-black px-3 py-1  cursor-pointer"
+          className="bg-slate-300 hover:bg-slate-500 font-bold text-black px-2 py-1 text-xs rounded"
           onClick={onAddBoard}
         >
-          Adicionar projeto
+          Adicionar
         </button>
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
-        {boards.map((board) => (
-          <button
-            onClick={() => onBoardClick(board.id)}
-            key={board.id}
-            className="relative bg-slate-600 text-white px-3 py-4  flex flex-col justify-between"
-          >
-            <p className="text-left font-bold">{board.name}</p>
-            <div className="absolute top-2 right-2 flex gap-2">
-              <button
-                className="text-white  px-2 py-1 rounded text-sm"
-                onClick={() => onEditBoard(board)}
-              >
-                <FaEdit />
-              </button>
-              <button
-                className="text-white  px-2 py-1 rounded text-sm"
-                onClick={() => onDeleteBoard(board.id)}
-              >
-                <FaTrash />
-              </button>
-            </div>
-          </button>
-        ))}
+      <div className="flex-1 overflow-y-auto">
+        {boards.length === 0 ? (
+          <p className="text-center text-gray-400 mt-4">Nenhum projeto</p>
+        ) : (
+          boards.map((board) => (
+            <button
+              key={board.id}
+              className="w-full  text-left px-4 py-2 hover:bg-slate-600 cursor-pointer"
+              onClick={() => onBoardClick(board.id)}
+            >
+              {board.name}
+            </button>
+          ))
+        )}
       </div>
     </div>
   );

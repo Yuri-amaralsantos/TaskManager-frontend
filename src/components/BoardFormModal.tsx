@@ -59,17 +59,17 @@ export const BoardFormModal = ({
         <h2 className="text-lg font-bold mb-4">
           {board ? "Editar projeto" : "Criar novo projeto"}
         </h2>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+        <form onSubmit={handleSubmit} className="flex rounded flex-col gap-2">
           <input
             type="text"
             placeholder="Nome do projeto"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="border px-2 py-1 "
+            className="border rounded px-2 py-1 "
           />
           <button
             type="submit"
-            className="bg-slate-500 text-white px-3 py-1 mt-2"
+            className="bg-slate-500 rounded text-white px-3 py-1 mt-2"
           >
             {board ? "Salvar alterações" : "Adicionar projeto"}
           </button>

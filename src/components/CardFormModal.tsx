@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { createCardInBoard, updateCard, type Card } from "../api/boardApi";
 import type { AxiosError } from "axios";
+import { IoClose } from "react-icons/io5";
 
 interface CardFormModalProps {
   isOpen: boolean;
@@ -59,8 +60,8 @@ export const CardFormModal = ({
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-6 rounded-lg w-96">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+      <div className="relative bg-white p-6 rounded-lg w-96">
         <h2 className="text-lg font-bold mb-4">
           {card ? "Editar tarefa" : "Adicionar nova tarefa"}
         </h2>
@@ -72,22 +73,24 @@ export const CardFormModal = ({
             onChange={(e) => setTitle(e.target.value)}
             className="border px-2 py-1 rounded"
           />
-          <input
-            type="text"
+          <textarea
             placeholder="Descrição"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="border px-2 py-1 rounded"
+            className="border px-2 py-1 rounded h-[200px] text-start resize-none"
           />
           <button
             type="submit"
-            className="bg-blue-500 text-white px-3 py-1 rounded mt-2"
+            className="bg-slate-500 text-white px-3 py-1 mt-2"
           >
             {card ? "Salvar alterações" : "Adicionar"}
           </button>
         </form>
-        <button className="mt-4 text-red-500" onClick={onClose}>
-          Fechar
+        <button
+          className="absolute top-1 right-1 text-lg text-red-500"
+          onClick={onClose}
+        >
+          <IoClose />
         </button>
       </div>
     </div>

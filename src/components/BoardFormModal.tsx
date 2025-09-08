@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { createBoard, updateBoard, type Board } from "../api/boardApi";
 import { AxiosError } from "axios";
+import { IoClose } from "react-icons/io5";
 
 interface BoardFormModalProps {
   isOpen: boolean;
@@ -53,8 +54,8 @@ export const BoardFormModal = ({
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-6 rounded-lg w-96">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+      <div className="relative bg-white p-6 rounded-lg w-96">
         <h2 className="text-lg font-bold mb-4">
           {board ? "Editar projeto" : "Criar novo projeto"}
         </h2>
@@ -64,17 +65,20 @@ export const BoardFormModal = ({
             placeholder="Nome do projeto"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="border px-2 py-1 rounded"
+            className="border px-2 py-1 "
           />
           <button
             type="submit"
-            className="bg-green-500 text-white px-3 py-1 rounded mt-2"
+            className="bg-slate-500 text-white px-3 py-1 mt-2"
           >
             {board ? "Salvar alterações" : "Adicionar projeto"}
           </button>
         </form>
-        <button className="mt-4 text-red-500" onClick={onClose}>
-          Fechar
+        <button
+          className="absolute top-1 right-1 text-lg text-red-500"
+          onClick={onClose}
+        >
+          <IoClose />
         </button>
       </div>
     </div>

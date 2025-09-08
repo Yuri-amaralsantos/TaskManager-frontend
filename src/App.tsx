@@ -12,6 +12,7 @@ import { BoardList } from "./components/BoardList";
 import { CardList } from "./components/CardList";
 import { BoardFormModal } from "./components/BoardFormModal";
 import { CardFormModal } from "./components/CardFormModal";
+import { HiArrowLeft } from "react-icons/hi";
 
 function App() {
   const [boards, setBoards] = useState<Board[]>([]);
@@ -57,9 +58,9 @@ function App() {
   };
 
   return (
-    <div className="w-[100vw] h-[100vh] bg-slate-600 flex pt-10 justify-center">
-      <div className="p-4 w-full h-full max-w-3xl bg-white rounded-lg">
-        <h1 className="text-lime-800 mb-4 font-bold text-center text-2xl">
+    <div className="w-[100vw] h-[100vh] bg-slate-600 flex px-4 pt-4 justify-center">
+      <div className="p-4 w-full h-full  bg-gray-200">
+        <h1 className="text-slate-800 mb-4 font-bold text-center text-2xl">
           Agenciador de tarefas
         </h1>
 
@@ -83,10 +84,10 @@ function App() {
           <div>
             <div className="flex justify-between mb-2">
               <button
-                className="bg-yellow-300 text-black font-bold px-3 py-1 rounded-lg cursor-pointer"
+                className="bg-slate-300 hover:bg-slate-300 text-black font-bold px-3 flex gap-2 items-center py-1"
                 onClick={handleBackToBoards}
               >
-                ← Voltar para projetos
+                <HiArrowLeft /> Voltar para projetos
               </button>
             </div>
 

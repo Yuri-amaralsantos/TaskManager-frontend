@@ -1,3 +1,4 @@
+import { FaEdit, FaTrash } from "react-icons/fa";
 import { type Card } from "../api/boardApi";
 
 interface CardListProps {
@@ -17,10 +18,12 @@ export const CardList = ({
 }: CardListProps) => {
   return (
     <div>
-      <div className="flex justify-between items-center my-4">
-        <h3 className="text-lg font-bold">Tarefas do projeto: {boardName}</h3>
+      <div className="flex justify-between bg-slate-500 p-4 items-center my-4">
+        <h3 className="text-lg text-white font-bold">
+          Tarefas do projeto {boardName}
+        </h3>
         <button
-          className="bg-yellow-300 font-bold text-black px-3 py-1 rounded"
+          className="bg-slate-300 hover:bg-slate-300 font-bold text-black px-3 py-1"
           onClick={onAddCard}
         >
           Adicionar tarefa
@@ -30,29 +33,29 @@ export const CardList = ({
       {cards.length === 0 ? (
         <p>Sem tarefas</p>
       ) : (
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-4 gap-4">
           {cards.map((card) => (
             <div
               key={card.id}
-              className="border-2 border-lime-600 p-2 rounded flex flex-col justify-between"
+              className="relative border-2 h-[150px] border-slate-600 p-2 rounded flex flex-col justify-between"
             >
               <div>
-                <strong>{card.title}</strong>
-                <hr className="text-lime-600 mb-2" />
+                <p className="text-lg">{card.title}</p>
+                <hr className="text-slate-600 mb-2" />
                 <p>{card.description}</p>
               </div>
-              <div className="flex gap-2 mt-2">
+              <div className="absolute right-1 top-1 flex gap-2">
                 <button
-                  className="bg-blue-500 hover:bg-blue-700 px-2 py-1 rounded text-sm text-white"
+                  className="text-slate-500 hover:text-slate-700 px-2 py-1  text-sm "
                   onClick={() => onEditCard(card)}
                 >
-                  Editar
+                  <FaEdit />
                 </button>
                 <button
-                  className="bg-red-500 hover:bg-red-700 px-2 py-1 rounded text-sm text-white"
+                  className="text-slate-500 hover:text-slate-700 px-2 py-1  text-sm"
                   onClick={() => onDeleteCard(card.id)}
                 >
-                  Excluir
+                  <FaTrash />
                 </button>
               </div>
             </div>

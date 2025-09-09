@@ -78,19 +78,22 @@ export const CardFormModal = ({
         <h2 className="text-lg font-bold mb-4">
           {card ? "Editar tarefa" : "Adicionar nova tarefa"}
         </h2>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+        <form
+          onSubmit={handleSubmit}
+          className="flex text-black flex-col gap-2"
+        >
           <input
             type="text"
             placeholder="Título"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="border px-2 py-1 rounded"
+            className="border text-black px-2 py-1 rounded"
           />
           <textarea
             placeholder="Descrição"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="border px-2 py-1 rounded h-[200px] resize-none"
+            className="border text-black px-2 py-1 rounded h-[200px] resize-none"
           />
           <select
             value={status}

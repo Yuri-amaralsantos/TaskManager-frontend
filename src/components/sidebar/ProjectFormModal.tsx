@@ -51,7 +51,7 @@ export const ProjectFormModal = ({
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
       <div className="relative bg-white p-6 rounded-lg w-96">
-        <h2 className="text-lg font-bold mb-4">
+        <h2 className="text-lg text-black font-bold mb-4">
           {board ? "Editar projeto" : "Criar novo projeto"}
         </h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
@@ -60,7 +60,7 @@ export const ProjectFormModal = ({
             placeholder="Nome do projeto"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="border rounded px-2 py-1"
+            className="border rounded text-black px-2 py-1"
           />
           {error && <p className="text-red-500">{error}</p>}
           <button

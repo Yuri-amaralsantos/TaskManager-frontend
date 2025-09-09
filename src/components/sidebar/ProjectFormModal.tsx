@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
-import { createBoard, updateBoard, type Board } from "../api/boardApi";
+import { createBoard, updateBoard, type Board } from "../../api/boardApi";
 import { AxiosError } from "axios";
 import { IoClose } from "react-icons/io5";
 
-interface BoardFormModalProps {
+interface ProjectFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   onBoardCreated: () => void;
   board: Board | null;
 }
 
-export const BoardFormModal = ({
+export const ProjectFormModal = ({
   isOpen,
   onClose,
   onBoardCreated,
   board,
-}: BoardFormModalProps) => {
+}: ProjectFormModalProps) => {
   const [name, setName] = useState("");
   const [error, setError] = useState("");
 

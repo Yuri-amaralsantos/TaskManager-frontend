@@ -8,10 +8,10 @@ import {
   type Card,
 } from "./api/boardApi";
 
-import { SideBar } from "./components/Sidebar";
-import { BoardHeader } from "./components/BoardHeader";
-import { BoardFormModal } from "./components/BoardFormModal";
-import { CardFormModal } from "./components/CardFormModal";
+import { SideBar } from "./components/sidebar/Sidebar";
+import { CardBoard } from "./components/board/CardBoard";
+import { ProjectFormModal } from "./components/sidebar/ProjectFormModal";
+import { CardFormModal } from "./components/board/CardFormModal";
 
 function App() {
   const [boards, setBoards] = useState<Board[]>([]);
@@ -75,7 +75,7 @@ function App() {
         )}
 
         {selectedBoardId && (
-          <BoardHeader
+          <CardBoard
             board={boards.find((b) => b.id === selectedBoardId)!}
             cardGroups={[
               {
@@ -113,7 +113,7 @@ function App() {
         )}
       </div>
 
-      <BoardFormModal
+      <ProjectFormModal
         isOpen={isBoardFormOpen}
         onClose={() => setIsBoardFormOpen(false)}
         onBoardCreated={() => fetchBoards()}

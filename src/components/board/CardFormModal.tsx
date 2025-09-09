@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createCardInBoard, updateCard, type Card } from "../api/boardApi";
+import { createCardInBoard, updateCard, type Card } from "../../api/boardApi";
 import type { AxiosError } from "axios";
 import { IoClose } from "react-icons/io5";
 

@@ -1,5 +1,5 @@
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { type Card } from "../api/boardApi";
+import { type Card } from "../../api/boardApi";
 
 interface CardListProps {
   cards: Card[];

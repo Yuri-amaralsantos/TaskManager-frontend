@@ -1,5 +1,5 @@
 import { IoSettings } from "react-icons/io5";
-import { type Board } from "../api/boardApi";
+import { type Board } from "../../api/boardApi";
 
 interface SideBarProps {
   boards: Board[];

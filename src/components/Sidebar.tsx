@@ -1,6 +1,7 @@
+import { IoSettings } from "react-icons/io5";
 import { type Board } from "../api/boardApi";
 
-interface BoardListProps {
+interface SideBarProps {
   boards: Board[];
   onBoardClick: (boardId: number) => void;
   onAddBoard: () => void;
@@ -8,13 +9,23 @@ interface BoardListProps {
   onDeleteBoard: (boardId: number) => void;
 }
 
-export const BoardList = ({
-  boards,
-  onBoardClick,
-  onAddBoard,
-}: BoardListProps) => {
+export const SideBar = ({ boards, onBoardClick, onAddBoard }: SideBarProps) => {
   return (
     <div className="w-64 h-full bg-slate-700 text-white flex flex-col">
+      <div className="flex items-center justify-between p-5 bg-slate-200">
+        <div className="flex gap-2 items-center">
+          <img
+            src="https://i.pravatar.cc/100?img=3"
+            alt="Profile"
+            className="w-8 h-8 rounded-full shadow"
+          />
+          <h2 className="font-bold text-black">Guest</h2>
+        </div>
+
+        <button>
+          <IoSettings className="text-black" />
+        </button>
+      </div>
       <div className="flex justify-between items-center p-4 border-b border-slate-500">
         <h2 className="font-bold text-lg">Projetos</h2>
         <button

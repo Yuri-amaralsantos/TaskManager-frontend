@@ -8,7 +8,7 @@ import {
   type Card,
 } from "./api/boardApi";
 
-import { BoardList } from "./components/BoardList";
+import { SideBar } from "./components/Sidebar";
 import { BoardHeader } from "./components/BoardHeader";
 import { BoardFormModal } from "./components/BoardFormModal";
 import { CardFormModal } from "./components/CardFormModal";
@@ -53,7 +53,7 @@ function App() {
 
   return (
     <div className="w-[100vw] h-[100vh] bg-slate-600 flex">
-      <BoardList
+      <SideBar
         boards={boards}
         onBoardClick={handleBoardClick}
         onAddBoard={() => {
@@ -67,9 +67,9 @@ function App() {
         onDeleteBoard={handleDeleteBoard}
       />
 
-      <div className="flex-1 bg-blue-500 overflow-y-auto">
+      <div className="flex-1 bg-gray-100 overflow-y-auto">
         {!selectedBoardId && (
-          <p className="text-center text-gray-600">
+          <p className="text-center text-bold text-white">
             Selecione um projeto no menu lateral.
           </p>
         )}
@@ -87,12 +87,12 @@ function App() {
                 cards: cards.filter((c) => c.status === "DOING"),
               },
               {
-                title: "Concluído",
-                cards: cards.filter((c) => c.status === "DONE"),
-              },
-              {
                 title: "Urgente",
                 cards: cards.filter((c) => c.status === "URGENT"),
+              },
+              {
+                title: "Concluído",
+                cards: cards.filter((c) => c.status === "DONE"),
               },
             ]}
             onAddCard={() => {

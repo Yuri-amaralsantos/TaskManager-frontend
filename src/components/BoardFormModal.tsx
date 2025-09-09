@@ -17,6 +17,7 @@ export const BoardFormModal = ({
   board,
 }: BoardFormModalProps) => {
   const [name, setName] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (board) {
@@ -27,6 +28,12 @@ export const BoardFormModal = ({
   }, [board]);
 
   if (!isOpen) return null;
+
+  const handleClose = () => {
+    setName("");
+    setError("");
+    onClose();
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,11 +52,11 @@ export const BoardFormModal = ({
     } catch (error: unknown) {
       const axiosError = error as AxiosError;
       if (axiosError.response?.status === 400) {
-        alert("Nome já existe");
+        setError("Nome já existe");
         return;
       }
       console.error(axiosError);
-      alert("Erro ao salvar o projeto");
+      setError("Erro ao salvar o projeto");
     }
   };
 
@@ -67,6 +74,8 @@ export const BoardFormModal = ({
             onChange={(e) => setName(e.target.value)}
             className="border rounded px-2 py-1 "
           />
+
+          <p className="text-red-500">{error}</p>
           <button
             type="submit"
             className="bg-slate-500 rounded text-white px-3 py-1 mt-2"
@@ -76,7 +85,7 @@ export const BoardFormModal = ({
         </form>
         <button
           className="absolute top-1 right-1 text-lg text-red-500"
-          onClick={onClose}
+          onClick={handleClose}
         >
           <IoClose />
         </button>

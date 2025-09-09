@@ -12,6 +12,8 @@ interface BoardHeaderProps {
   onDeleteBoard: (boardId: number) => void;
 }
 
+const colors = ["bg-gray-300", "bg-yellow-300", "bg-red-300", "bg-green-300"];
+
 export const BoardHeader = ({
   board,
   cardGroups,
@@ -23,7 +25,7 @@ export const BoardHeader = ({
 }: BoardHeaderProps) => {
   return (
     <div className="flex flex-col">
-      <div className="sticky top-0 left-64 right-0 bg-slate-500 p-4 flex justify-between items-center z-50">
+      <div className="sticky top-0 left-64 right-0 bg-slate-500 p-5 flex justify-between items-center z-50">
         <h3 className="text-lg text-white font-bold">
           Tarefas do projeto - {board.name}
         </h3>
@@ -48,19 +50,22 @@ export const BoardHeader = ({
       </div>
 
       <div className="flex gap-6 px-4 py-6 overflow-x-auto">
-        {cardGroups.map((group) => (
-          <div
-            key={group.title}
-            className="backdrop-blur-lg  bg-white/20 border border-white/10 w-[20vw] p-4 rounded"
-          >
-            <h4 className="font-bold mb-2">{group.title}</h4>
-            <CardList
-              cards={group.cards}
-              onEditCard={onEditCard}
-              onDeleteCard={onDeleteCard}
-            />
-          </div>
-        ))}
+        {cardGroups.map((group, index) => {
+          const color = colors[index % colors.length];
+          return (
+            <div
+              key={group.title}
+              className={`${color} w-[20vw] p-4 rounded-lg `}
+            >
+              <h4 className="font-bold mb-2">{group.title}</h4>
+              <CardList
+                cards={group.cards}
+                onEditCard={onEditCard}
+                onDeleteCard={onDeleteCard}
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );

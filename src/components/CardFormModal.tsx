@@ -21,6 +21,7 @@ export const CardFormModal = ({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("a fazer");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (card) {
@@ -35,6 +36,14 @@ export const CardFormModal = ({
   }, [card]);
 
   if (!isOpen || !boardId) return null;
+
+  const handleClose = () => {
+    setTitle("");
+    setDescription("");
+    setError("");
+    setStatus("a fazer");
+    onClose();
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,11 +64,11 @@ export const CardFormModal = ({
     } catch (error: unknown) {
       const axiosError = error as AxiosError;
       if (axiosError.response?.status === 400) {
-        alert("Nome já existe");
+        setError("Nome já existe");
         return;
       }
       console.error(axiosError);
-      alert("Erro ao salvar o projeto");
+      setError("Erro ao salvar o projeto");
     }
   };
 
@@ -95,6 +104,8 @@ export const CardFormModal = ({
             <option value="URGENT">Urgente</option>
           </select>
 
+          <p className="text-red-500">{error}</p>
+
           <button
             type="submit"
             className="bg-slate-500 text-white rounded px-3 py-1 mt-2"
@@ -104,7 +115,7 @@ export const CardFormModal = ({
         </form>
         <button
           className="absolute top-1 right-1 text-lg text-red-500"
-          onClick={onClose}
+          onClick={handleClose}
         >
           <IoClose />
         </button>

@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import { createCardInBoard, updateCard, type Card } from "../../api/boardApi";
-import type { AxiosError } from "axios";
 import { IoClose } from "react-icons/io5";
+import { useCards } from "../../hooks/useCards";
+import { type Card } from "../../api/boardApi";
 
 interface CardFormModalProps {
   isOpen: boolean;
   boardId: number | null;
   onClose: () => void;
-  onCardCreated: () => void;
   card: Card | null;
 }
 
@@ -15,13 +14,14 @@ export const CardFormModal = ({
   isOpen,
   boardId,
   onClose,
-  onCardCreated,
   card,
 }: CardFormModalProps) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("TODO");
   const [error, setError] = useState("");
+
+  const { createCardMutation, updateCardMutation } = useCards(boardId);
 
   useEffect(() => {
     if (card) {
@@ -40,8 +40,8 @@ export const CardFormModal = ({
   const handleClose = () => {
     setTitle("");
     setDescription("");
-    setError("");
     setStatus("TODO");
+    setError("");
     onClose();
   };
 
@@ -51,24 +51,24 @@ export const CardFormModal = ({
 
     try {
       if (card) {
-        await updateCard(card.id, title, description, status);
+        await updateCardMutation.mutateAsync({
+          id: card.id,
+          title,
+          description,
+          status,
+        });
       } else {
-        await createCardInBoard(boardId, title, description, status);
+        await createCardMutation.mutateAsync({
+          boardId,
+          title,
+          description,
+          status,
+        });
       }
-
-      setTitle("");
-      setDescription("");
-      setStatus("TODO");
-      onCardCreated();
-      onClose();
-    } catch (error: unknown) {
-      const axiosError = error as AxiosError;
-      if (axiosError.response?.status === 400) {
-        setError("Nome já existe");
-        return;
-      }
-      console.error(axiosError);
-      setError("Erro ao salvar o projeto");
+      handleClose();
+    } catch (err) {
+      setError("Erro ao salvar a tarefa");
+      console.error(err);
     }
   };
 
@@ -90,9 +90,8 @@ export const CardFormModal = ({
             placeholder="Descrição"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="border px-2 py-1 rounded h-[200px] text-start resize-none"
+            className="border px-2 py-1 rounded h-[200px] resize-none"
           />
-
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
@@ -104,7 +103,7 @@ export const CardFormModal = ({
             <option value="URGENT">Urgente</option>
           </select>
 
-          <p className="text-red-500">{error}</p>
+          {error && <p className="text-red-500">{error}</p>}
 
           <button
             type="submit"

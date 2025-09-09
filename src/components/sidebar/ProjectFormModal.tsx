@@ -1,30 +1,26 @@
 import { useEffect, useState } from "react";
-import { createBoard, updateBoard, type Board } from "../../api/boardApi";
-import { AxiosError } from "axios";
 import { IoClose } from "react-icons/io5";
+import { useBoards } from "../../hooks/useBoards";
+import { type Board } from "../../api/boardApi";
 
 interface ProjectFormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onBoardCreated: () => void;
   board: Board | null;
 }
 
 export const ProjectFormModal = ({
   isOpen,
   onClose,
-  onBoardCreated,
   board,
 }: ProjectFormModalProps) => {
   const [name, setName] = useState("");
   const [error, setError] = useState("");
 
+  const { createBoardMutation, updateBoardMutation } = useBoards();
+
   useEffect(() => {
-    if (board) {
-      setName(board.name);
-    } else {
-      setName("");
-    }
+    setName(board ? board.name : "");
   }, [board]);
 
   if (!isOpen) return null;
@@ -41,22 +37,14 @@ export const ProjectFormModal = ({
 
     try {
       if (board) {
-        await updateBoard(board.id, name);
+        await updateBoardMutation.mutateAsync({ id: board.id, name });
       } else {
-        await createBoard(name);
+        await createBoardMutation.mutateAsync(name);
       }
-
-      setName("");
-      onBoardCreated();
-      onClose();
-    } catch (error: unknown) {
-      const axiosError = error as AxiosError;
-      if (axiosError.response?.status === 400) {
-        setError("Nome já existe");
-        return;
-      }
-      console.error(axiosError);
+      handleClose();
+    } catch (err) {
       setError("Erro ao salvar o projeto");
+      console.error(err);
     }
   };
 
@@ -66,19 +54,18 @@ export const ProjectFormModal = ({
         <h2 className="text-lg font-bold mb-4">
           {board ? "Editar projeto" : "Criar novo projeto"}
         </h2>
-        <form onSubmit={handleSubmit} className="flex rounded flex-col gap-2">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-2">
           <input
             type="text"
             placeholder="Nome do projeto"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="border rounded px-2 py-1 "
+            className="border rounded px-2 py-1"
           />
-
-          <p className="text-red-500">{error}</p>
+          {error && <p className="text-red-500">{error}</p>}
           <button
             type="submit"
-            className="bg-slate-500 rounded text-white px-3 py-1 mt-2"
+            className="bg-slate-500 text-white rounded px-3 py-1 mt-2"
           >
             {board ? "Salvar alterações" : "Adicionar projeto"}
           </button>

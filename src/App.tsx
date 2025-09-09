@@ -1,70 +1,39 @@
-import { useEffect, useState } from "react";
-import {
-  getBoards,
-  getCardsByBoard,
-  deleteBoard,
-  deleteCard,
-  type Board,
-  type Card,
-} from "./api/boardApi";
-
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SideBar } from "./components/sidebar/Sidebar";
 import { CardBoard } from "./components/board/CardBoard";
 import { ProjectFormModal } from "./components/sidebar/ProjectFormModal";
 import { CardFormModal } from "./components/board/CardFormModal";
+import { useBoards } from "./hooks/useBoards";
+import { useCards } from "./hooks/useCards";
+import { useUIStore } from "./store/uiStore";
 
-function App() {
-  const [boards, setBoards] = useState<Board[]>([]);
-  const [selectedBoardId, setSelectedBoardId] = useState<number | null>(null);
-  const [cards, setCards] = useState<Card[]>([]);
-  const [isBoardFormOpen, setIsBoardFormOpen] = useState(false);
-  const [isCardFormOpen, setIsCardFormOpen] = useState(false);
-  const [boardToEdit, setBoardToEdit] = useState<Board | null>(null);
-  const [cardToEdit, setCardToEdit] = useState<Card | null>(null);
+const queryClient = new QueryClient();
 
-  const fetchBoards = async () => {
-    const data = await getBoards();
-    setBoards(data);
-  };
+function Dashboard() {
+  const { boardsQuery, deleteBoardMutation } = useBoards();
+  const {
+    selectedBoardId,
+    setSelectedBoardId,
+    openBoardForm,
+    openCardForm,
+    boardToEdit,
+    cardToEdit,
+    isBoardFormOpen,
+    isCardFormOpen,
+    closeBoardForm,
+    closeCardForm,
+  } = useUIStore();
 
-  const loadCards = async (boardId: number) => {
-    const cardsData = await getCardsByBoard(boardId);
-    setCards(cardsData);
-  };
-
-  useEffect(() => {
-    fetchBoards();
-  }, []);
-
-  const handleBoardClick = async (boardId: number) => {
-    setSelectedBoardId(boardId);
-    await loadCards(boardId);
-  };
-
-  const handleDeleteBoard = async (id: number) => {
-    await deleteBoard(id);
-    fetchBoards();
-  };
-
-  const handleDeleteCard = async (id: number) => {
-    await deleteCard(id);
-    if (selectedBoardId) loadCards(selectedBoardId);
-  };
+  const { cardsQuery, deleteCardMutation } = useCards(selectedBoardId);
 
   return (
     <div className="w-[100vw] h-[100vh] bg-slate-600 flex">
       <SideBar
-        boards={boards}
-        onBoardClick={handleBoardClick}
-        onAddBoard={() => {
-          setBoardToEdit(null);
-          setIsBoardFormOpen(true);
-        }}
-        onEditBoard={(board) => {
-          setBoardToEdit(board);
-          setIsBoardFormOpen(true);
-        }}
-        onDeleteBoard={handleDeleteBoard}
+        boards={boardsQuery.data || []}
+        onBoardClick={setSelectedBoardId}
+        onAddBoard={() => openBoardForm(null)}
+        onEditBoard={(board) => openBoardForm(board)}
+        onDeleteBoard={(id) => deleteBoardMutation.mutate(id)}
       />
 
       <div className="flex-1 bg-gray-100 overflow-y-auto">
@@ -74,63 +43,72 @@ function App() {
           </p>
         )}
 
-        {selectedBoardId && (
-          <CardBoard
-            board={boards.find((b) => b.id === selectedBoardId)!}
-            cardGroups={[
-              {
-                title: "A Fazer",
-                cards: cards.filter((c) => c.status === "TODO"),
-              },
-              {
-                title: "Em Progresso",
-                cards: cards.filter((c) => c.status === "DOING"),
-              },
-              {
-                title: "Urgente",
-                cards: cards.filter((c) => c.status === "URGENT"),
-              },
-              {
-                title: "Concluído",
-                cards: cards.filter((c) => c.status === "DONE"),
-              },
-            ]}
-            onAddCard={() => {
-              setCardToEdit(null);
-              setIsCardFormOpen(true);
-            }}
-            onEditCard={(card) => {
-              setCardToEdit(card);
-              setIsCardFormOpen(true);
-            }}
-            onDeleteCard={handleDeleteCard}
-            onEditBoard={(board) => {
-              setBoardToEdit(board);
-              setIsBoardFormOpen(true);
-            }}
-            onDeleteBoard={handleDeleteBoard}
-          />
-        )}
+        {selectedBoardId &&
+          cardsQuery.data &&
+          (() => {
+            const selectedBoard = boardsQuery.data?.find(
+              (b) => b.id === selectedBoardId
+            );
+
+            if (!selectedBoard) {
+              return (
+                <p className="text-center text-red-500">
+                  Board não encontrado.
+                </p>
+              );
+            }
+
+            return (
+              <CardBoard
+                board={selectedBoard}
+                cardGroups={[
+                  {
+                    title: "A Fazer",
+                    cards: cardsQuery.data.filter((c) => c.status === "TODO"),
+                  },
+                  {
+                    title: "Em Progresso",
+                    cards: cardsQuery.data.filter((c) => c.status === "DOING"),
+                  },
+                  {
+                    title: "Urgente",
+                    cards: cardsQuery.data.filter((c) => c.status === "URGENT"),
+                  },
+                  {
+                    title: "Concluído",
+                    cards: cardsQuery.data.filter((c) => c.status === "DONE"),
+                  },
+                ]}
+                onAddCard={() => openCardForm(null)}
+                onEditCard={(card) => openCardForm(card)}
+                onDeleteCard={(id) => deleteCardMutation.mutate(id)}
+                onEditBoard={(board) => openBoardForm(board)}
+                onDeleteBoard={(id) => deleteBoardMutation.mutate(id)}
+              />
+            );
+          })()}
       </div>
 
       <ProjectFormModal
         isOpen={isBoardFormOpen}
-        onClose={() => setIsBoardFormOpen(false)}
-        onBoardCreated={() => fetchBoards()}
+        onClose={closeBoardForm}
         board={boardToEdit}
       />
 
       <CardFormModal
         isOpen={isCardFormOpen}
         boardId={selectedBoardId}
-        onClose={() => setIsCardFormOpen(false)}
-        onCardCreated={() => {
-          if (selectedBoardId) loadCards(selectedBoardId);
-        }}
+        onClose={closeCardForm}
         card={cardToEdit}
       />
     </div>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Dashboard />
+    </QueryClientProvider>
+  );
+}

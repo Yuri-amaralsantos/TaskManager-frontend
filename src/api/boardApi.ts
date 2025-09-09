@@ -1,6 +1,16 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000";
+export const api = axios.create({
+  baseURL: "http://localhost:3000",
+});
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    console.error("API error:", error.response?.data || error.message);
+    return Promise.reject(error);
+  }
+);
 
 export interface Card {
   id: number;
@@ -17,34 +27,34 @@ export interface Board {
 }
 
 export const getBoards = async (): Promise<Board[]> => {
-  const res = await axios.get(`${API_URL}/boards`);
+  const res = await api.get("/boards");
   return res.data;
 };
 
 export const getBoardById = async (id: number): Promise<Board> => {
-  const res = await axios.get(`${API_URL}/boards/${id}`);
+  const res = await api.get(`/boards/${id}`);
   return res.data;
 };
 
 export const createBoard = async (name: string): Promise<Board> => {
-  const res = await axios.post(`${API_URL}/boards`, { name });
+  const res = await api.post(`/boards`, { name });
   return res.data;
 };
 
 export const updateBoard = async (id: number, name: string): Promise<Board> => {
-  const res = await axios.put(`${API_URL}/boards/${id}`, { name });
+  const res = await api.put(`/boards/${id}`, { name });
   return res.data;
 };
 
 export const deleteBoard = async (
   id: number
 ): Promise<{ deleted: boolean }> => {
-  const res = await axios.delete(`${API_URL}/boards/${id}`);
+  const res = await api.delete(`/boards/${id}`);
   return res.data;
 };
 
 export const getCardsByBoard = async (boardId: number): Promise<Card[]> => {
-  const res = await axios.get(`${API_URL}/boards/${boardId}`);
+  const res = await api.get(`/boards/${boardId}`);
   return res.data.cards;
 };
 
@@ -54,11 +64,12 @@ export const createCardInBoard = async (
   description: string,
   status: string
 ): Promise<Card> => {
-  const res = await axios.post(`${API_URL}/boards/${boardId}/cards`, {
+  const res = await api.post(`/boards/${boardId}/cards`, {
     title,
     description,
     status,
   });
+  console.log(res);
   return res.data;
 };
 
@@ -68,7 +79,7 @@ export const updateCard = async (
   description: string,
   status: string
 ): Promise<Card> => {
-  const res = await axios.put(`${API_URL}/cards/${id}`, {
+  const res = await api.put(`/cards/${id}`, {
     title,
     description,
     status,
@@ -77,6 +88,6 @@ export const updateCard = async (
 };
 
 export const deleteCard = async (id: number): Promise<{ deleted: boolean }> => {
-  const res = await axios.delete(`${API_URL}/cards/${id}`);
+  const res = await api.delete(`/cards/${id}`);
   return res.data;
 };

@@ -20,7 +20,7 @@ export const CardFormModal = ({
 }: CardFormModalProps) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [status, setStatus] = useState("a fazer");
+  const [status, setStatus] = useState("TODO");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export const CardFormModal = ({
     } else {
       setTitle("");
       setDescription("");
-      setStatus("a fazer");
+      setStatus("TODO");
     }
   }, [card]);
 
@@ -41,7 +41,7 @@ export const CardFormModal = ({
     setTitle("");
     setDescription("");
     setError("");
-    setStatus("a fazer");
+    setStatus("TODO");
     onClose();
   };
 
@@ -58,7 +58,7 @@ export const CardFormModal = ({
 
       setTitle("");
       setDescription("");
-      setStatus("a fazer");
+      setStatus("TODO");
       onCardCreated();
       onClose();
     } catch (error: unknown) {

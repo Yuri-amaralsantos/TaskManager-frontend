@@ -1,93 +1,88 @@
+// boardApi.ts
 import axios from "axios";
 
-export const api = axios.create({
-  baseURL: "http://localhost:3000",
-});
-
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    console.error("API error:", error.response?.data || error.message);
-    return Promise.reject(error);
-  }
-);
+const API_URL = "http://localhost:3000";
 
 export interface Card {
   id: number;
   title: string;
   description: string;
-  status: "TODO" | "DOING" | "DONE" | "URGENT";
+  listId: number;
+}
+
+export interface List {
+  id: number;
+  name: string;
   boardId: number;
+  cards: Card[];
 }
 
 export interface Board {
   id: number;
   name: string;
-  cards: Card[];
+  lists: List[];
 }
 
+// ---------- BOARDS ----------
 export const getBoards = async (): Promise<Board[]> => {
-  const res = await api.get("/boards");
-  return res.data;
-};
-
-export const getBoardById = async (id: number): Promise<Board> => {
-  const res = await api.get(`/boards/${id}`);
+  const res = await axios.get(`${API_URL}/boards`);
   return res.data;
 };
 
 export const createBoard = async (name: string): Promise<Board> => {
-  const res = await api.post(`/boards`, { name });
+  const res = await axios.post(`${API_URL}/boards`, { name });
   return res.data;
 };
 
 export const updateBoard = async (id: number, name: string): Promise<Board> => {
-  const res = await api.put(`/boards/${id}`, { name });
+  const res = await axios.put(`${API_URL}/boards/${id}`, { name });
   return res.data;
 };
 
-export const deleteBoard = async (
-  id: number
-): Promise<{ deleted: boolean }> => {
-  const res = await api.delete(`/boards/${id}`);
+export const deleteBoard = async (id: number): Promise<void> => {
+  await axios.delete(`${API_URL}/boards/${id}`);
+};
+
+// ---------- LISTS ----------
+export const getListsByBoard = async (boardId: number): Promise<List[]> => {
+  const res = await axios.get(`${API_URL}/boards/${boardId}/lists`);
   return res.data;
 };
 
-export const getCardsByBoard = async (boardId: number): Promise<Card[]> => {
-  const res = await api.get(`/boards/${boardId}`);
-  return res.data.cards;
-};
-
-export const createCardInBoard = async (
+export const createListInBoard = async (
   boardId: number,
-  title: string,
-  description: string,
-  status: string
+  name: string
+): Promise<List> => {
+  const res = await axios.post(`${API_URL}/boards/${boardId}/lists`, { name });
+  return res.data;
+};
+
+export const updateList = async (id: number, name: string): Promise<List> => {
+  const res = await axios.put(`${API_URL}/lists/${id}`, { name });
+  return res.data;
+};
+
+export const deleteList = async (id: number): Promise<void> => {
+  await axios.delete(`${API_URL}/lists/${id}`);
+};
+
+// ---------- CARDS ----------
+export const createCardInList = async (
+  listId: number,
+  data: Omit<Card, "id" | "listId">
 ): Promise<Card> => {
-  const res = await api.post(`/boards/${boardId}/cards`, {
-    title,
-    description,
-    status,
-  });
-  console.log(res);
+  const res = await axios.post(`${API_URL}/lists/${listId}/cards`, data);
   return res.data;
 };
 
 export const updateCard = async (
   id: number,
-  title: string,
-  description: string,
-  status: string
+  data: Partial<Omit<Card, "id">>
 ): Promise<Card> => {
-  const res = await api.put(`/cards/${id}`, {
-    title,
-    description,
-    status,
-  });
+  const res = await axios.put(`${API_URL}/cards/${id}`, data);
   return res.data;
 };
 
-export const deleteCard = async (id: number): Promise<{ deleted: boolean }> => {
-  const res = await api.delete(`/cards/${id}`);
-  return res.data;
+export const deleteCard = async (id: number): Promise<void> => {
+  await axios.delete(`${API_URL}/cards/${id}`);
 };

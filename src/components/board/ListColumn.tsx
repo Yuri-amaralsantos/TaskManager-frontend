@@ -1,3 +1,4 @@
+import { Draggable } from "@hello-pangea/dnd";
 import { useState } from "react";
 import { type List, type Card } from "../../api/boardApi";
 import { useLists } from "../../hooks/useLists";
@@ -52,12 +53,22 @@ export const ListColumn = ({
       </div>
 
       <div className="flex flex-col gap-2 flex-grow">
-        {list.cards.map((card) => (
-          <CardItem
+        {list.cards.map((card, index) => (
+          <Draggable
             key={card.id}
-            card={card}
-            onClick={() => handleOpenDetails(card)}
-          />
+            draggableId={card.id.toString()}
+            index={index}
+          >
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+              >
+                <CardItem card={card} onClick={() => handleOpenDetails(card)} />
+              </div>
+            )}
+          </Draggable>
         ))}
       </div>
 

@@ -86,3 +86,11 @@ export const updateCard = async (
 export const deleteCard = async (id: number): Promise<void> => {
   await axios.delete(`${API_URL}/cards/${id}`);
 };
+
+export const moveCard = async (
+  id: number,
+  data: { toListId: number; position: number }
+): Promise<Card> => {
+  const res = await axios.patch(`${API_URL}/cards/${id}/move`, data);
+  return res.data;
+};

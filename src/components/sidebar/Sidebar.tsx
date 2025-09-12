@@ -84,6 +84,18 @@ export const SideBar = ({ boards, onBoardClick }: SideBarProps) => {
         )}
       </div>
 
+      <div className="flex flex-col items-center text-center justify-center py-2">
+        <p className="text-yellow-500">
+          Versão de desenvolvimento <br /> Duvidas entre em contato <br />
+          <a
+            href="mailto:yuri.a.santos12@gmail.com"
+            className="underline text-white"
+          >
+            yuri.a.santos12@gmail.com
+          </a>
+        </p>
+      </div>
+
       <ProjectFormModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

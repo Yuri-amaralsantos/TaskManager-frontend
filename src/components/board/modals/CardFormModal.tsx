@@ -65,7 +65,7 @@ export const CardFormModal = ({
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
       <div className="relative bg-white p-6 rounded-lg w-96">
         <h2 className="text-lg font-bold mb-4 text-black">
-          {card ? "Editar card" : "Criar novo card"}
+          {card ? "Editar tarefa" : "Criar nova tarefa"}
         </h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
           <input
@@ -86,7 +86,7 @@ export const CardFormModal = ({
             type="submit"
             className="bg-slate-500 text-white rounded px-3 py-1 mt-2"
           >
-            {card ? "Salvar alterações" : "Adicionar card"}
+            {card ? "Salvar alterações" : "Adicionar tarefa"}
           </button>
         </form>
 

@@ -5,6 +5,7 @@ import { useLists } from "../../hooks/useLists";
 import { useCards } from "../../hooks/useCards";
 import { CardItem } from "./CardItem";
 import { CardDetailsModal } from "./modals/CardDetailsModal";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 interface ListColumnProps {
   list: List;
@@ -36,18 +37,24 @@ export const ListColumn = ({
     <div className="bg-white w-[20vw] h-full p-4 rounded-lg shadow flex flex-col">
       <div className="flex justify-between items-center mb-2">
         <h4 className="font-bold">{list.name}</h4>
-        <div className="flex gap-2">
+        <div className="flex gap-2 justify-between items-center">
+          <button
+            className="text-black bg-slate-200 px-2 rounded  text-sm"
+            onClick={() => onAddCard(list.id)}
+          >
+            nova tarefa
+          </button>
           <button
             onClick={() => onEditList(list)}
-            className="text-blue-500 text-sm"
+            className="text-black text-sm"
           >
-            Editar
+            <FaEdit />
           </button>
           <button
             onClick={() => deleteListMutation.mutate(list.id)}
-            className="text-red-500 text-sm"
+            className="text-black text-sm"
           >
-            Excluir
+            <FaTrash />
           </button>
         </div>
       </div>
@@ -71,13 +78,6 @@ export const ListColumn = ({
           </Draggable>
         ))}
       </div>
-
-      <button
-        className="bg-slate-200 hover:bg-slate-300 mt-2 px-2 py-1 rounded text-sm"
-        onClick={() => onAddCard(list.id)}
-      >
-        + Adicionar card
-      </button>
 
       <CardDetailsModal
         isOpen={isCardDetailsOpen}

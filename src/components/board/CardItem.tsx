@@ -12,7 +12,6 @@ export const CardItem = ({ card, onClick }: CardItemProps) => {
       onClick={onClick}
     >
       <p className="font-semibold">{card.title}</p>
-      <p className="text-sm text-gray-600">{card.description}</p>
     </div>
   );
 };

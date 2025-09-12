@@ -28,7 +28,7 @@ export const CardDetailsModal = ({
           {onEdit && (
             <button
               onClick={() => onEdit(card)}
-              className="flex-1 bg-blue-500 text-white rounded px-3 py-1 flex items-center justify-center gap-1"
+              className="flex-1 bg-slate-500 text-white rounded px-3 py-1 flex items-center justify-center gap-1"
             >
               <IoPencil /> Editar
             </button>
@@ -39,7 +39,7 @@ export const CardDetailsModal = ({
                 onDelete(card.id);
                 onClose();
               }}
-              className="flex-1 bg-red-500 text-white rounded px-3 py-1 flex items-center justify-center gap-1"
+              className="flex-1 bg-slate-500 text-white rounded px-3 py-1 flex items-center justify-center gap-1"
             >
               <IoTrash /> Deletar
             </button>

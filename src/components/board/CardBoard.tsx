@@ -16,14 +16,13 @@ export const CardBoard = ({ board }: CardBoardProps) => {
 
   const [isListFormOpen, setIsListFormOpen] = useState(false);
   const [listToEdit, setListToEdit] = useState<List | null>(null);
-
   const [isCardFormOpen, setIsCardFormOpen] = useState(false);
   const [listIdForCard, setListIdForCard] = useState<number | null>(null);
   const [cardToEdit, setCardToEdit] = useState<Card | null>(null);
 
   const { moveCardMutation } = useCards(board?.id ?? null, null);
 
-  if (!board) {
+  if (!board)
     return (
       <div className="flex h-full items-center justify-center">
         <p className="text-center text-black mt-10">
@@ -31,28 +30,24 @@ export const CardBoard = ({ board }: CardBoardProps) => {
         </p>
       </div>
     );
-  }
 
   if (listsQuery.isLoading)
     return <p className="text-center mt-10">Carregando listas...</p>;
-  if (listsQuery.isError) {
+  if (listsQuery.isError)
     return (
       <div className="flex h-full items-center justify-center">
         <p className="text-center text-black mt-10">Erro ao carregar listas.</p>
       </div>
     );
-  }
 
   const handleDragEnd = (result: DropResult) => {
     const { source, destination } = result;
     if (!destination) return;
-
     if (
       source.droppableId === destination.droppableId &&
       source.index === destination.index
-    ) {
+    )
       return;
-    }
 
     moveCardMutation.mutate({
       cardId: parseInt(result.draggableId, 10),
@@ -63,8 +58,8 @@ export const CardBoard = ({ board }: CardBoardProps) => {
   };
 
   return (
-    <div className="flex flex-col bg-slate-300 h-full">
-      <div className="sticky top-0 bg-slate-500 p-5 flex justify-between items-center z-50">
+    <div className="flex flex-col h-full bg-slate-300">
+      <div className="bg-slate-500 p-5 flex justify-between items-center z-50 sticky top-0">
         <h3 className="text-lg text-white font-bold">
           Listas do projeto - {board.name}
         </h3>
@@ -80,38 +75,40 @@ export const CardBoard = ({ board }: CardBoardProps) => {
       </div>
 
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="flex gap-6 px-4 py-6">
-          {listsQuery.data?.map((list) => (
-            <Droppable key={list.id} droppableId={list.id.toString()}>
-              {(provided) => (
-                <div
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  className="flex-shrink-0 h-full"
-                >
-                  <ListColumn
-                    boardId={board.id}
-                    list={list}
-                    onEditList={(l) => {
-                      setListToEdit(l);
-                      setIsListFormOpen(true);
-                    }}
-                    onAddCard={(listId) => {
-                      setCardToEdit(null);
-                      setListIdForCard(listId);
-                      setIsCardFormOpen(true);
-                    }}
-                    onEditCard={(listId, card) => {
-                      setCardToEdit(card);
-                      setListIdForCard(listId);
-                      setIsCardFormOpen(true);
-                    }}
-                  />
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          ))}
+        <div className="flex-1 overflow-auto px-4 py-6">
+          <div className="flex gap-6 min-w-max">
+            {listsQuery.data?.map((list) => (
+              <Droppable key={list.id} droppableId={list.id.toString()}>
+                {(provided) => (
+                  <div
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    className="flex-shrink-0 h-full"
+                  >
+                    <ListColumn
+                      boardId={board.id}
+                      list={list}
+                      onEditList={(l) => {
+                        setListToEdit(l);
+                        setIsListFormOpen(true);
+                      }}
+                      onAddCard={(listId) => {
+                        setCardToEdit(null);
+                        setListIdForCard(listId);
+                        setIsCardFormOpen(true);
+                      }}
+                      onEditCard={(listId, card) => {
+                        setCardToEdit(card);
+                        setListIdForCard(listId);
+                        setIsCardFormOpen(true);
+                      }}
+                    />
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            ))}
+          </div>
         </div>
       </DragDropContext>
 

@@ -5,7 +5,9 @@ import { useLists } from "../../hooks/useLists";
 import { useCards } from "../../hooks/useCards";
 import { CardItem } from "./CardItem";
 import { CardDetailsModal } from "./modals/CardDetailsModal";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
+import { BsThreeDots } from "react-icons/bs";
+import { useUIStore } from "../../store/uiStore";
 
 interface ListColumnProps {
   list: List;
@@ -24,6 +26,10 @@ export const ListColumn = ({
 }: ListColumnProps) => {
   const { deleteListMutation } = useLists(list.boardId);
   const { deleteCardMutation } = useCards(boardId, list.id);
+  const openMenuId = useUIStore((s) => s.openMenuId);
+  const setOpenMenuId = useUIStore((s) => s.setOpenMenuId);
+
+  const isMenuOpen = openMenuId === list.id;
 
   const [isCardDetailsOpen, setIsCardDetailsOpen] = useState(false);
   const [cardToShow, setCardToShow] = useState<Card | null>(null);
@@ -34,28 +40,48 @@ export const ListColumn = ({
   };
 
   return (
-    <div className="bg-white w-[20vw] h-full p-4 rounded-lg shadow flex flex-col">
-      <div className="flex justify-between items-center mb-2">
-        <h4 className="font-bold">{list.name}</h4>
-        <div className="flex gap-2 justify-between items-center">
+    <div className="bg-slate-300 w-[20vw] h-full shadow-md p-4 rounded-lg shadow flex flex-col">
+      <div className="flex justify-between items-center mb-6">
+        <h4 className="font-bold text-slate-700">{list.name}</h4>
+        <div className="flex gap-3 justify-between items-center relative">
           <button
-            className="text-black bg-slate-200 px-2 rounded  text-sm"
+            className="text-black text-sm"
             onClick={() => onAddCard(list.id)}
           >
-            nova tarefa
+            <FaPlus />
           </button>
-          <button
-            onClick={() => onEditList(list)}
-            className="text-black text-sm"
-          >
-            <FaEdit />
+          <button onClick={() => setOpenMenuId(isMenuOpen ? null : list.id)}>
+            <BsThreeDots className="text-lg" />
           </button>
-          <button
-            onClick={() => deleteListMutation.mutate(list.id)}
-            className="text-black text-sm"
-          >
-            <FaTrash />
-          </button>
+
+          {isMenuOpen && (
+            <div className="absolute top-3 right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-10">
+              <ul className="py-1 text-sm text-gray-700">
+                <li>
+                  <button
+                    onClick={() => {
+                      onEditList(list);
+                      setOpenMenuId(null);
+                    }}
+                    className="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100"
+                  >
+                    <FaEdit /> Edit List
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => {
+                      deleteListMutation.mutate(list.id);
+                      setOpenMenuId(null);
+                    }}
+                    className="flex items-center gap-2 w-full px-4 py-2 text-red-600 hover:bg-red-100"
+                  >
+                    <FaTrash /> Delete List
+                  </button>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
       </div>
 

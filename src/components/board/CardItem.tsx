@@ -8,10 +8,10 @@ interface CardItemProps {
 export const CardItem = ({ card, onClick }: CardItemProps) => {
   return (
     <div
-      className="bg-slate-100 p-2 rounded cursor-pointer hover:bg-slate-200"
+      className="bg-white px-2 h-24 rounded-lg shadow-md flex items-center justify-center cursor-pointer hover:bg-slate-200"
       onClick={onClick}
     >
-      <p className="font-semibold">{card.title}</p>
+      <p className="text-lg">{card.title}</p>
     </div>
   );
 };

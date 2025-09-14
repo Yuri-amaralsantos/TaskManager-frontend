@@ -20,11 +20,13 @@ export const CardDetailsModal = ({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
-      <div className="relative bg-white p-6 rounded-lg w-96">
-        <h2 className="text-xl font-bold mb-2">{card.title}</h2>
-        <p className="text-gray-700 mb-4">{card.description}</p>
+      <div className="relative bg-white p-6 rounded-lg w-[80vw] h-[80vh]">
+        <h2 className="text-xl font-bold mb-2 pb-2 border-b border-slate-500">
+          Titulo: {card.title}
+        </h2>
+        <p className="text-gray-700 mb-4">Descrição: {card.description}</p>
 
-        <div className="flex gap-2">
+        <div className="absolute bottom-2 right-2 flex gap-2">
           {onEdit && (
             <button
               onClick={() => onEdit(card)}
@@ -48,7 +50,7 @@ export const CardDetailsModal = ({
 
         <button
           onClick={onClose}
-          className="absolute top-1 right-1 text-lg text-red-500"
+          className="absolute top-1 right-1 text-2xl text-red-500"
         >
           <IoClose />
         </button>

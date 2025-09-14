@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { IoSettings } from "react-icons/io5";
 import { type Board } from "../../api/boardApi";
 import { ProjectFormModal } from "./ProjectFormModal";
 import { useBoards } from "../../hooks/useBoards";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
+import { HiOutlineDotsVertical } from "react-icons/hi";
 
 interface SideBarProps {
   boards: Board[];
@@ -18,23 +18,23 @@ export const SideBar = ({ boards, onBoardClick }: SideBarProps) => {
 
   return (
     <div className="w-64 h-full bg-slate-700 text-white flex flex-col">
-      <div className="flex items-center justify-between p-5 bg-slate-200">
+      <div className="flex items-center justify-between p-5 border-b border-slate-500">
         <div className="flex gap-2 items-center">
           <img
             src="https://i.pravatar.cc/100?img=3"
             alt="Profile"
             className="w-8 h-8 rounded-full"
           />
-          <h2 className="font-bold text-black">Guest</h2>
+          <h2 className="font-bold text-white">Guest</h2>
         </div>
 
         <button>
-          <IoSettings className="text-black" />
+          <HiOutlineDotsVertical className="text-white" />
         </button>
       </div>
 
-      <div className="flex justify-between items-center p-4 border-b border-slate-500">
-        <h2 className="font-bold text-lg">Projetos</h2>
+      <div className="flex justify-between items-center p-4">
+        <h2 className="font-bold">Projetos</h2>
         <button
           className="bg-slate-300 hover:bg-slate-500 font-bold text-black px-2 py-1 text-xs rounded"
           onClick={() => {
@@ -42,11 +42,11 @@ export const SideBar = ({ boards, onBoardClick }: SideBarProps) => {
             setIsModalOpen(true);
           }}
         >
-          Adicionar
+          <FaPlus />
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="pl-4 flex-1 overflow-y-auto">
         {boards.length === 0 ? (
           <p className="text-center text-gray-400 mt-4">Nenhum projeto</p>
         ) : (

@@ -58,13 +58,13 @@ export const CardBoard = ({ board }: CardBoardProps) => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-slate-300">
-      <div className="bg-slate-500 p-5 flex justify-between items-center z-50 sticky top-0">
-        <h3 className="text-lg text-white font-bold">
+    <div className="flex flex-col h-full bg-white">
+      <div className="border-b border-slate-500 p-5 flex justify-between items-center z-50 sticky top-0">
+        <h3 className="text-lg text-slate-500 font-semibold">
           Listas do projeto - {board.name}
         </h3>
         <button
-          className="bg-slate-300 hover:bg-slate-400 px-3 py-1 rounded"
+          className="bg-slate-200 shadow-sm hover:bg-slate-500 px-3 py-1 rounded"
           onClick={() => {
             setListToEdit(null);
             setIsListFormOpen(true);

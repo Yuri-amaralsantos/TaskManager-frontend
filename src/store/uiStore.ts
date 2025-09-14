@@ -14,6 +14,9 @@ interface UIState {
   openCardForm: (card?: Card | null) => void;
   closeCardForm: () => void;
   cardToEdit: Card | null;
+
+  openMenuId: number | null;
+  setOpenMenuId: (id: number | null) => void;
 }
 
 export const useUIStore = create<UIState>((set) => ({
@@ -31,4 +34,7 @@ export const useUIStore = create<UIState>((set) => ({
   openCardForm: (card = null) =>
     set({ isCardFormOpen: true, cardToEdit: card }),
   closeCardForm: () => set({ isCardFormOpen: false, cardToEdit: null }),
+
+  openMenuId: null,
+  setOpenMenuId: (id) => set({ openMenuId: id }),
 }));

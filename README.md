@@ -1,4 +1,7 @@
-# Task Manager app - frontend
+# Task Manager app - frontend 
+
+[backend]
+(https://github.com/Yuri-amaralsantos/TaskManager-backend.git)
 
 ## Sobre o site
 
@@ -53,11 +56,6 @@ Exemplo: VITE_API_URL=http://localhost:3000
 npm run dev
 
 O site estará disponível em http://localhost:5173
-
-
-# Acesse o repositório da api
-
-https://github.com/Yuri-amaralsantos/TaskManager-frontend.git
 
 
 ## Tecnologias Utilizadas

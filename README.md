@@ -36,7 +36,6 @@ Em breve.
 
 git clone https://github.com/Yuri-amaralsantos/TaskManager-frontend.git
 
-
 ### 2. Instale as dependências
 
 npm install

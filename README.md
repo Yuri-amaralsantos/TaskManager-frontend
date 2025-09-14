@@ -1,69 +1,72 @@
-# React + TypeScript + Vite
+# Task Manager app - frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+O Task Manager App é um aplicativo completo de gestão de tarefas, desenvolvido para atender tanto equipes de trabalho quanto usuários individuais que desejam organizar suas atividades de forma eficiente e visual. Com ele, é possível criar projetos, dividir esses projetos em listas e gerenciar tarefas de maneira simples, intuitiva e interativa.
 
-Currently, two official plugins are available:
+O aplicativo oferece uma experiência fluida, permitindo que os usuários criem, editem, movam e excluam tarefas e listas conforme suas necessidades. Ele é ideal para quem busca produtividade, acompanhamento de progresso e organização de projetos pessoais ou profissionais.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Atualmente em desenvolvimento contínuo, o Task Manager App terá em breve funcionalidades avançadas, como projetos privados, cadastro de usuários, subtarefas, busca e filtragem de tarefas, entre outras melhorias que tornarão a gestão de tarefas ainda mais completa e personalizada.
 
-## Expanding the ESLint configuration
+O objetivo é fornecer uma ferramenta flexível, que se adapte a diferentes fluxos de trabalho, seja para gerenciar um time de desenvolvimento ou organizar tarefas do dia a dia, mantendo tudo de forma clara, acessível e eficiente.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Funcionalidades
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+✅ Criar, editar e excluir projetos
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+✅ Criar, editar e excluir listas
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+✅ Criar, editar, mover e excluir tarefas
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Futuras Melhorias
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- [ ]  Cadastro
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- [ ]  Projetos privados
+
+- [ ]  Busca e filtragem de tarefas
+
+- [ ]  Subtarefas
+
+## Demonstração
+
+Em breve.
+
+## Como rodar o projeto?
+
+1️⃣ Clone o repositório
+
+git clone https://github.com/Yuri-amaralsantos/TaskManager-frontend.git
+
+
+2️⃣ Instale as dependências
+
+npm install
+
+
+3️⃣ Execute o projeto
+
+npm run dev
+
+O site estará disponível em http://localhost:5173
+
+
+# Acesse o repositório da api
+
+https://github.com/Yuri-amaralsantos/TaskManager-frontend.git
+
+
+## Tecnologias Utilizadas
+
+🔹 React.js – Construção da interface
+
+🔹 Zustand – Gerenciamento de estado local da aplicação
+
+🔹 React Query – Gerenciamento de 
+
+🔹 CSS – Estilização do projeto
+
+## Desenvolvedor
+
+Yuri Amaral Santos
+🚀 [Portfólio](https://yuri-amaral-santos-portfolio.vercel.app)
+ | [GitHub](https://github.com/Yuri-amaralsantos)
+ | [LinkedIn](https://www.linkedin.com/in/yuri-amaral-santos-17264a25b)

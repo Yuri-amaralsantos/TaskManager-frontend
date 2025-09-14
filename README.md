@@ -1,7 +1,6 @@
 # Task Manager app - frontend 
 
-[backend]
-(https://github.com/Yuri-amaralsantos/TaskManager-backend.git)
+[Acesse o Backend](https://github.com/Yuri-amaralsantos/TaskManager-backend.git)
 
 ## Sobre o site
 

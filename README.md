@@ -1,5 +1,7 @@
 # Task Manager app - frontend
 
+## Sobre o site
+
 O Task Manager App é um aplicativo completo de gestão de tarefas, desenvolvido para atender tanto equipes de trabalho quanto usuários individuais que desejam organizar suas atividades de forma eficiente e visual. Com ele, é possível criar projetos, dividir esses projetos em listas e gerenciar tarefas de maneira simples, intuitiva e interativa.
 
 O aplicativo oferece uma experiência fluida, permitindo que os usuários criem, editem, movam e excluam tarefas e listas conforme suas necessidades. Ele é ideal para quem busca produtividade, acompanhamento de progresso e organização de projetos pessoais ou profissionais.
@@ -30,7 +32,7 @@ O objetivo é fornecer uma ferramenta flexível, que se adapte a diferentes flux
 
 Em breve.
 
-## Como rodar o projeto?
+## Como rodar o projeto
 
 ### 1. Clone o repositório
 

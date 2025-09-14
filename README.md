@@ -32,17 +32,22 @@ Em breve.
 
 ## Como rodar o projeto?
 
-1️⃣ Clone o repositório
+### 1. Clone o repositório
 
 git clone https://github.com/Yuri-amaralsantos/TaskManager-frontend.git
 
 
-2️⃣ Instale as dependências
+### 2. Instale as dependências
 
 npm install
 
+### 3. Variáveis de ambiente
 
-3️⃣ Execute o projeto
+Crie um arquivo .env para a variável que representa o endereço da api
+
+Exemplo: VITE_API_URL=http://localhost:3000
+
+### 4. Execute o projeto
 
 npm run dev
 

@@ -32,7 +32,7 @@ O objetivo é fornecer uma ferramenta flexível, que se adapte a diferentes flux
 
 ## Demonstração
 
-[Em breve.](https://task-manager-frontend-eight-teal.vercel.app)
+[Link do site](https://task-manager-frontend-eight-teal.vercel.app)
 
 ## Como rodar o projeto
 
